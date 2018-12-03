@@ -1,6 +1,5 @@
 package com.codingwithmitch.mvvmrecyclerview.repositories;
 
-import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 
 import com.codingwithmitch.mvvmrecyclerview.models.NicePlace;
@@ -8,7 +7,11 @@ import com.codingwithmitch.mvvmrecyclerview.models.NicePlace;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NicePlaceRepository{
+
+/**
+ * Singleton pattern
+ */
+public class NicePlaceRepository {
 
     private static NicePlaceRepository instance;
     private ArrayList<NicePlace> dataSet = new ArrayList<>();
@@ -20,17 +23,13 @@ public class NicePlaceRepository{
         return instance;
     }
 
-    // Pretend to get data from a webservice or online database somewhere
+
+    // Pretend to get data from a webservice or online source
     public MutableLiveData<List<NicePlace>> getNicePlaces(){
         setNicePlaces();
         MutableLiveData<List<NicePlace>> data = new MutableLiveData<>();
-        data.setValue(getData());
+        data.setValue(dataSet);
         return data;
-    }
-
-
-    private ArrayList<NicePlace> getData(){
-        return dataSet;
     }
 
     private void setNicePlaces(){
@@ -66,6 +65,16 @@ public class NicePlaceRepository{
                 new NicePlace("https://i.redd.it/obx4zydshg601.jpg",
                         "Austrailia")
         );
-
     }
 }
+
+
+
+
+
+
+
+
+
+
+

@@ -5,21 +5,16 @@ import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.os.AsyncTask;
 
-import com.codingwithmitch.mvvmrecyclerview.adapters.RecyclerAdapter;
 import com.codingwithmitch.mvvmrecyclerview.models.NicePlace;
 import com.codingwithmitch.mvvmrecyclerview.repositories.NicePlaceRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivityViewModel extends ViewModel {
 
-    private static final String TAG = "MainActivityViewModel";
-
     private MutableLiveData<List<NicePlace>> mNicePlaces;
     private NicePlaceRepository mRepo;
     private MutableLiveData<Boolean> mIsUpdating = new MutableLiveData<>();
-
 
     public void init(){
         if(mNicePlaces != null){
@@ -34,16 +29,6 @@ public class MainActivityViewModel extends ViewModel {
 
         new AsyncTask<Void, Void, Void>(){
             @Override
-            protected Void doInBackground(Void... voids) {
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                return null;
-            }
-
-            @Override
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
                 List<NicePlace> currentPlaces = mNicePlaces.getValue();
@@ -51,39 +36,26 @@ public class MainActivityViewModel extends ViewModel {
                 mNicePlaces.postValue(currentPlaces);
                 mIsUpdating.postValue(false);
             }
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
         }.execute();
-
-
     }
 
     public LiveData<List<NicePlace>> getNicePlaces(){
         return mNicePlaces;
     }
 
-    public LiveData<Boolean> isUpdating(){
+
+    public LiveData<Boolean> getIsUpdating(){
         return mIsUpdating;
     }
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -1,7 +1,6 @@
 package com.codingwithmitch.mvvmrecyclerview;
 
 import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -9,7 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 
@@ -17,17 +15,18 @@ import com.codingwithmitch.mvvmrecyclerview.adapters.RecyclerAdapter;
 import com.codingwithmitch.mvvmrecyclerview.models.NicePlace;
 import com.codingwithmitch.mvvmrecyclerview.viewmodels.MainActivityViewModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
 
-    private MainActivityViewModel mMainActivityViewModel;
     private FloatingActionButton mFab;
     private RecyclerView mRecyclerView;
     private RecyclerAdapter mAdapter;
     private ProgressBar mProgressBar;
+    private MainActivityViewModel mMainActivityViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,16 +37,17 @@ public class MainActivity extends AppCompatActivity {
         mProgressBar = findViewById(R.id.progress_bar);
 
         mMainActivityViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
+
         mMainActivityViewModel.init();
 
-        mMainActivityViewModel.getNicePlaces().observe(this, new Observer<List<NicePlace>>(){
+        mMainActivityViewModel.getNicePlaces().observe(this, new Observer<List<NicePlace>>() {
             @Override
             public void onChanged(@Nullable List<NicePlace> nicePlaces) {
                 mAdapter.notifyDataSetChanged();
             }
         });
 
-        mMainActivityViewModel.isUpdating().observe(this, new Observer<Boolean>() {
+        mMainActivityViewModel.getIsUpdating().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(@Nullable Boolean aBoolean) {
                 if(aBoolean){
@@ -55,17 +55,20 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else{
                     hideProgressBar();
-                    mRecyclerView.smoothScrollToPosition(mMainActivityViewModel.getNicePlaces().getValue().size() - 1);
+                    mRecyclerView.smoothScrollToPosition(mMainActivityViewModel.getNicePlaces().getValue().size()-1);
                 }
             }
         });
+
 
         mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mMainActivityViewModel.addNewValue(
-                        new NicePlace("https://i.imgur.com/ZcLLrkY.jpg",
-                                "Washington")
+                        new NicePlace(
+                                "https://i.imgur.com/ZcLLrkY.jpg",
+                                "Washington"
+                        )
                 );
             }
         });
