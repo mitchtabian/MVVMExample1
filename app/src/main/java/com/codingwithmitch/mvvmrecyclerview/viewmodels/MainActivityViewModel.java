@@ -22,7 +22,6 @@ public class MainActivityViewModel extends ViewModel {
 
 
     public void init(){
-        mIsUpdating.setValue(false);
         if(mNicePlaces != null){
             return;
         }
@@ -37,7 +36,7 @@ public class MainActivityViewModel extends ViewModel {
             @Override
             protected Void doInBackground(Void... voids) {
                 try {
-                    Thread.sleep(3000);
+                    Thread.sleep(2000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -50,6 +49,7 @@ public class MainActivityViewModel extends ViewModel {
                 List<NicePlace> currentPlaces = mNicePlaces.getValue();
                 currentPlaces.add(nicePlace);
                 mNicePlaces.postValue(currentPlaces);
+                mIsUpdating.postValue(false);
             }
         }.execute();
 

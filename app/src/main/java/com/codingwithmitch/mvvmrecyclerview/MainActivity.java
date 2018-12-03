@@ -43,12 +43,7 @@ public class MainActivity extends AppCompatActivity {
         mMainActivityViewModel.getNicePlaces().observe(this, new Observer<List<NicePlace>>(){
             @Override
             public void onChanged(@Nullable List<NicePlace> nicePlaces) {
-                for(NicePlace nicePlace: nicePlaces){
-                    Log.d(TAG, "onChanged: " + nicePlace.getTitle());
-                }
                 mAdapter.notifyDataSetChanged();
-                mRecyclerView.smoothScrollToPosition(mMainActivityViewModel.getNicePlaces().getValue().size() - 1);
-                hideProgressBar();
             }
         });
 
@@ -60,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else{
                     hideProgressBar();
+                    mRecyclerView.smoothScrollToPosition(mMainActivityViewModel.getNicePlaces().getValue().size() - 1);
                 }
             }
         });
